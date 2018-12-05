@@ -23,3 +23,4 @@ $ npm run build
 
 ![Screenshot](src/images/screenshot.png)
 
+## License MIT
