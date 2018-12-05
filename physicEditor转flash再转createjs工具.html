@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>physicEditor转flash再转createjs工具</title>
+    <style>
+        body{
+            padding: 40px;
+        }
+    </style>
+</head>
+<body>
+<textarea id="input" style="width:100%;height: 300px; border: 1px solid #ccc;" placeholder="请输入as数据"></textarea>
+<div id="out" style="margin-top: 20px;font-size: 14px;"></div>
+<script>
+    var input = document.getElementById('input');
+    var out = document.getElementById('out');
+
+    function trans() {
+        let val = input.value;
+        let res = [];
+        let obj = {};
+        let outStr;
+
+        if(val == "") return;
+
+        //Box2D ActionScript(Flash)
+        val = val.replace(/new b2Vec2/g,'').replace(/\(|\)/g,'');
+
+        //QuickBox2D ActionScript(Flash)
+        val = val.replace(/\/ptm_ratio/g,'');
+
+        //根据特征取出数据
+        val = val.match(/\[\s(.*)\s\]/g);
+
+        if(!Array.isArray(val)) return;
+
+        for(let i = 0;i<val.length;i++){
+            //根据特征取出需要配对的数据
+            let doubleArr = val[i].split(/\s\s,\s\s/);
+            //console.info(doubleArr)
+            let cld = [];
+            for(let j = 0;j<doubleArr.length;j++){
+                //去出前后无用的[]
+                doubleArr[j] = doubleArr[j].replace(/\[\s+/g,'').replace(/\s\]/g,'');
+
+                //从逗号分割
+                let singleArr = doubleArr[j].split(',');
+
+                let sArr = [];
+                for(let n = 0;n<singleArr.length;n++){
+                    singleArr[n] = Number(singleArr[n]);
+                    sArr.push(singleArr[n]);
+                }
+                cld.push(sArr);
+            }
+            res.push(cld);
+        }
+
+
+        //输出结果
+        obj.data = res;
+        outStr = JSON.stringify(obj);
+        outStr = outStr.replace(/{"data":/,'').replace('}','');
+        console.info(outStr);
+        out.innerHTML = outStr;
+
+    }
+
+    input.addEventListener('blur',function () {
+        trans();
+    })
+</script>
+</body>
+</html>
