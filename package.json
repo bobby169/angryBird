@@ -24,7 +24,7 @@
     "url-loader": "~0.5.9",
     "webpack": "~3.4.1",
     "webpack-dev-server": "~2.6.1",
-    "webpack-bundle-analyzer": "^2.9.0",
+    "webpack-bundle-analyzer": "^3.3.2",
     "webpack-merge": "~4.1.0",
     "less": "~2.4.0",
     "less-loader": "~4.0.5"
